@@ -4,9 +4,9 @@ import elphaLogo from "@/assets/elpha-logo.png";
 const Footer = () => {
   return (
     <footer className="border-t border-border/50 bg-background">
-      <div className="container-wide px-6 md:px-8 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
-          <div className="col-span-2 md:col-span-1">
+      <div className="container-wide px-4 sm:px-6 md:px-8 py-10 sm:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10">
+          <div className="sm:col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4">
               <img src={elphaLogo} alt="ELPHA AI" className="w-7 h-7 object-contain" />
               <span className="font-display font-semibold text-foreground">ELPHA AI</span>
@@ -48,7 +48,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-border/50 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="mt-10 sm:mt-12 pt-6 sm:pt-8 border-t border-border/50 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-muted-foreground">© 2020 ELPHA AI. All rights reserved.</p>
           <div className="flex gap-6">
             <span className="text-xs text-muted-foreground">Privacy</span>

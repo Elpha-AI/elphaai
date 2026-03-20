@@ -6,12 +6,13 @@ interface FloatingOrbProps {
   left?: string;
   right?: string;
   delay?: number;
+  className?: string;
 }
 
-const FloatingOrb = ({ size = 300, top, left, right, delay = 0 }: FloatingOrbProps) => {
+const FloatingOrb = ({ size = 300, top, left, right, delay = 0, className = "" }: FloatingOrbProps) => {
   return (
     <motion.div
-      className="absolute rounded-full pointer-events-none"
+      className={`absolute rounded-full pointer-events-none ${className}`}
       style={{
         width: size,
         height: size,
