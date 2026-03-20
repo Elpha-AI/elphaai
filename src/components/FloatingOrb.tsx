@@ -18,7 +18,7 @@ const FloatingOrb = ({ size = 300, top, left, right, delay = 0 }: FloatingOrbPro
         top,
         left,
         right,
-        background: "radial-gradient(circle, hsl(28 100% 55% / 0.08) 0%, transparent 70%)",
+        background: "radial-gradient(circle, hsl(348 75% 58% / 0.08) 0%, transparent 70%)",
         filter: "blur(40px)",
       }}
       animate={{

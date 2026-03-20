@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import elphaLogo from "@/assets/elpha-logo.png";
 
 const Footer = () => {
   return (
@@ -7,9 +8,7 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-                <span className="font-display font-bold text-primary-foreground text-xs">E</span>
-              </div>
+              <img src={elphaLogo} alt="ELPHA AI" className="w-7 h-7 object-contain" />
               <span className="font-display font-semibold text-foreground">ELPHA AI</span>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
@@ -50,7 +49,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-12 pt-8 border-t border-border/50 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-muted-foreground">© 2026 ELPHA AI. All rights reserved.</p>
+          <p className="text-xs text-muted-foreground">© 2020 ELPHA AI. All rights reserved.</p>
           <div className="flex gap-6">
             <span className="text-xs text-muted-foreground">Privacy</span>
             <span className="text-xs text-muted-foreground">Terms</span>

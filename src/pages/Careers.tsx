@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, MapPin, Clock } from "lucide-react";
+import { ArrowRight, MapPin, Clock, X, CheckCircle, Upload } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import AnimatedSection from "@/components/AnimatedSection";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -58,7 +60,63 @@ const perks = [
   "Flexible schedules",
 ];
 
+interface ApplicationForm {
+  name: string;
+  email: string;
+  phone: string;
+  coverLetter: string;
+  resume: File | null;
+}
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const ALLOWED_FILE_TYPES = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+
 const Careers = () => {
+  const [selectedJob, setSelectedJob] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState<ApplicationForm>({ name: "", email: "", phone: "", coverLetter: "", resume: null });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const validate = () => {
+    const e: Record<string, string> = {};
+    if (!form.name.trim()) e.name = "Name is required";
+    if (form.name.trim().length > 100) e.name = "Name must be under 100 characters";
+    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Valid email is required";
+    if (!form.phone.trim()) e.phone = "Phone number is required";
+    if (form.phone.trim() && !/^[\d\s\-+()]{7,20}$/.test(form.phone.trim())) e.phone = "Enter a valid phone number";
+    if (!form.resume) {
+      e.resume = "Resume is required";
+    } else {
+      if (!ALLOWED_FILE_TYPES.includes(form.resume.type)) e.resume = "Only PDF or Word files accepted";
+      if (form.resume.size > MAX_FILE_SIZE) e.resume = "File must be under 5MB";
+    }
+    if (form.coverLetter.length > 2000) e.coverLetter = "Must be under 2000 characters";
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validate()) {
+      setSubmitted(true);
+    }
+  };
+
+  const closeModal = () => {
+    setSelectedJob(null);
+    setSubmitted(false);
+    setForm({ name: "", email: "", phone: "", coverLetter: "", resume: null });
+    setErrors({});
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setForm({ ...form, resume: file });
+    if (errors.resume) {
+      setErrors({ ...errors, resume: "" });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -88,7 +146,10 @@ const Careers = () => {
           <div className="space-y-3">
             {openings.map((job, i) => (
               <AnimatedSection key={job.title} delay={i * 0.05}>
-                <div className="glass-card-hover rounded-xl p-6 group cursor-pointer">
+                <div
+                  onClick={() => setSelectedJob(job.title)}
+                  className="glass-card-hover rounded-xl p-6 group cursor-pointer"
+                >
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-1">
@@ -140,6 +201,144 @@ const Careers = () => {
           </AnimatedSection>
         </div>
       </section>
+
+      {/* Application Modal */}
+      <AnimatePresence>
+        {selectedJob && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm"
+            onClick={(e) => { if (e.target === e.currentTarget) closeModal(); }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="glass-card rounded-2xl p-8 w-full max-w-lg max-h-[90vh] overflow-y-auto relative"
+            >
+              <button
+                onClick={closeModal}
+                className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <X size={20} />
+              </button>
+
+              <AnimatePresence mode="wait">
+                {submitted ? (
+                  <motion.div
+                    key="success"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="text-center py-8"
+                  >
+                    <CheckCircle size={48} className="text-primary mx-auto mb-4" />
+                    <h3 className="text-2xl font-display font-bold text-foreground mb-2">Application submitted!</h3>
+                    <p className="text-muted-foreground mb-6">
+                      Thank you for applying for <span className="text-foreground font-medium">{selectedJob}</span>. We'll review your application and get back to you soon.
+                    </p>
+                    <button
+                      onClick={closeModal}
+                      className="px-6 py-2.5 rounded-lg bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all"
+                    >
+                      Close
+                    </button>
+                  </motion.div>
+                ) : (
+                  <motion.form
+                    key="form"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    onSubmit={handleSubmit}
+                    className="space-y-5"
+                  >
+                    <div>
+                      <h3 className="text-xl font-display font-bold text-foreground mb-1">Apply for {selectedJob}</h3>
+                      <p className="text-sm text-muted-foreground">Fill in your details below.</p>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-foreground mb-1.5">Name *</label>
+                      <input
+                        value={form.name}
+                        onChange={(e) => setForm({ ...form, name: e.target.value })}
+                        className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-all"
+                        placeholder="Your full name"
+                        maxLength={100}
+                      />
+                      {errors.name && <span className="text-xs text-destructive mt-1 block">{errors.name}</span>}
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-foreground mb-1.5">Email *</label>
+                      <input
+                        type="email"
+                        value={form.email}
+                        onChange={(e) => setForm({ ...form, email: e.target.value })}
+                        className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-all"
+                        placeholder="you@email.com"
+                        maxLength={255}
+                      />
+                      {errors.email && <span className="text-xs text-destructive mt-1 block">{errors.email}</span>}
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-foreground mb-1.5">Phone *</label>
+                      <input
+                        type="tel"
+                        value={form.phone}
+                        onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                        className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-all"
+                        placeholder="+1 (555) 000-0000"
+                        maxLength={20}
+                      />
+                      {errors.phone && <span className="text-xs text-destructive mt-1 block">{errors.phone}</span>}
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-foreground mb-1.5">Resume * <span className="text-muted-foreground font-normal">(PDF or Word, max 5MB)</span></label>
+                      <label className="flex items-center gap-3 px-4 py-3 rounded-lg bg-secondary/50 border border-border cursor-pointer hover:border-primary/50 transition-all">
+                        <Upload size={16} className="text-muted-foreground" />
+                        <span className="text-sm text-muted-foreground">
+                          {form.resume ? form.resume.name : "Choose file..."}
+                        </span>
+                        <input
+                          type="file"
+                          accept=".pdf,.doc,.docx"
+                          onChange={handleFileChange}
+                          className="hidden"
+                        />
+                      </label>
+                      {errors.resume && <span className="text-xs text-destructive mt-1 block">{errors.resume}</span>}
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-foreground mb-1.5">Cover Letter <span className="text-muted-foreground font-normal">(optional)</span></label>
+                      <textarea
+                        value={form.coverLetter}
+                        onChange={(e) => setForm({ ...form, coverLetter: e.target.value })}
+                        rows={4}
+                        className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-all resize-none"
+                        placeholder="Tell us why you're interested in this role..."
+                        maxLength={2000}
+                      />
+                      {errors.coverLetter && <span className="text-xs text-destructive mt-1 block">{errors.coverLetter}</span>}
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="w-full py-3 rounded-lg bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all"
+                    >
+                      Submit Application
+                    </button>
+                  </motion.form>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <Footer />
     </div>

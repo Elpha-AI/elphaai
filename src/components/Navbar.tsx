@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import elphaLogo from "@/assets/elpha-logo.png";
 
 const navLinks = [
   { label: "Services", href: "/services" },
@@ -19,9 +20,7 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
       <div className="container-wide flex items-center justify-between h-16 px-6 md:px-8">
         <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-            <span className="font-display font-bold text-primary-foreground text-sm">E</span>
-          </div>
+          <img src={elphaLogo} alt="ELPHA AI" className="w-8 h-8 object-contain" />
           <span className="font-display font-semibold text-lg text-foreground">ELPHA AI</span>
         </Link>
 
