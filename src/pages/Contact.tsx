@@ -28,17 +28,17 @@ const Contact = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      <section className="relative pt-32 pb-20">
-        <div className="container-wide px-6 md:px-8">
+      <section className="relative pt-24 sm:pt-32 pb-16 sm:pb-20">
+        <div className="container-wide px-4 sm:px-6 md:px-8">
           <AnimatedSection>
             <div className="flex items-center gap-2 mb-4">
               <div className="h-px w-8 bg-primary" />
               <span className="text-sm text-primary font-medium tracking-wide uppercase">Contact</span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-display font-bold text-gradient max-w-3xl mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-display font-bold text-gradient max-w-3xl mb-4 sm:mb-6">
               Let's build something.
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl">
               Share your challenge. We'll respond within 24 hours with a clear, considered perspective.
             </p>
           </AnimatedSection>
@@ -47,7 +47,7 @@ const Contact = () => {
 
       <section className="section-padding pt-0">
         <div className="container-wide">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-10">
             <div className="lg:col-span-2">
               <AnimatePresence mode="wait">
                 {submitted ? (
@@ -55,11 +55,11 @@ const Contact = () => {
                     key="success"
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="glass-card rounded-xl p-12 text-center"
+                    className="glass-card rounded-xl p-8 sm:p-12 text-center"
                   >
-                    <CheckCircle size={48} className="text-primary mx-auto mb-4" />
-                    <h3 className="text-2xl font-display font-bold text-foreground mb-2">Message received.</h3>
-                    <p className="text-muted-foreground">We'll be in touch within 24 hours.</p>
+                    <CheckCircle size={40} className="text-primary mx-auto mb-4 sm:size-12" />
+                    <h3 className="text-xl sm:text-2xl font-display font-bold text-foreground mb-2">Message received.</h3>
+                    <p className="text-sm sm:text-base text-muted-foreground">We'll be in touch within 24 hours.</p>
                   </motion.div>
                 ) : (
                   <motion.form
@@ -67,15 +67,15 @@ const Contact = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     onSubmit={handleSubmit}
-                    className="glass-card rounded-xl p-8 space-y-6"
+                    className="glass-card rounded-xl p-5 sm:p-8 space-y-5 sm:space-y-6"
                   >
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                       <div>
                         <label className="block text-sm font-medium text-foreground mb-2">Name</label>
                         <input
                           value={form.name}
                           onChange={(e) => setForm({ ...form, name: e.target.value })}
-                          className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-all"
+                          className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg bg-secondary/50 border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-all"
                           placeholder="Your name"
                         />
                         {errors.name && <span className="text-xs text-destructive mt-1">{errors.name}</span>}
@@ -85,7 +85,7 @@ const Contact = () => {
                         <input
                           value={form.email}
                           onChange={(e) => setForm({ ...form, email: e.target.value })}
-                          className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-all"
+                          className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg bg-secondary/50 border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-all"
                           placeholder="you@company.com"
                         />
                         {errors.email && <span className="text-xs text-destructive mt-1">{errors.email}</span>}
@@ -96,7 +96,7 @@ const Contact = () => {
                       <input
                         value={form.company}
                         onChange={(e) => setForm({ ...form, company: e.target.value })}
-                        className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-all"
+                        className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg bg-secondary/50 border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-all"
                         placeholder="Your organization"
                       />
                     </div>
@@ -108,7 +108,7 @@ const Contact = () => {
                             key={t}
                             type="button"
                             onClick={() => setForm({ ...form, type: t.toLowerCase() })}
-                            className={`px-4 py-2 rounded-lg text-sm transition-all ${
+                            className={`px-3 sm:px-4 py-2 rounded-lg text-sm transition-all ${
                               form.type === t.toLowerCase()
                                 ? "bg-primary text-primary-foreground"
                                 : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
@@ -125,14 +125,14 @@ const Contact = () => {
                         value={form.message}
                         onChange={(e) => setForm({ ...form, message: e.target.value })}
                         rows={5}
-                        className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-all resize-none"
+                        className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg bg-secondary/50 border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-all resize-none"
                         placeholder="Tell us about your challenge..."
                       />
                       {errors.message && <span className="text-xs text-destructive mt-1">{errors.message}</span>}
                     </div>
                     <button
                       type="submit"
-                      className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-lg bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all"
+                      className="group inline-flex items-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-lg bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all"
                     >
                       Send Message
                       <Send size={14} className="group-hover:translate-x-1 transition-transform" />
@@ -142,9 +142,9 @@ const Contact = () => {
               </AnimatePresence>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               <AnimatedSection delay={0.1}>
-                <div className="glass-card rounded-xl p-6">
+                <div className="glass-card rounded-xl p-5 sm:p-6">
                   <h3 className="font-display font-semibold text-foreground mb-3">Direct Contact</h3>
                   <div className="space-y-2 text-sm text-muted-foreground">
                     <p>hello@elpha.ai</p>
@@ -153,7 +153,7 @@ const Contact = () => {
                 </div>
               </AnimatedSection>
               <AnimatedSection delay={0.2}>
-                <div className="glass-card rounded-xl p-6">
+                <div className="glass-card rounded-xl p-5 sm:p-6">
                   <h3 className="font-display font-semibold text-foreground mb-3">Headquarters</h3>
                   <p className="text-sm text-muted-foreground">
                     548 Market Street, Suite 400<br />
@@ -162,7 +162,7 @@ const Contact = () => {
                 </div>
               </AnimatedSection>
               <AnimatedSection delay={0.3}>
-                <div className="glass-card rounded-xl p-6">
+                <div className="glass-card rounded-xl p-5 sm:p-6">
                   <h3 className="font-display font-semibold text-foreground mb-3">Response Time</h3>
                   <p className="text-sm text-muted-foreground">
                     We respond to all inquiries within 24 hours during business days.
