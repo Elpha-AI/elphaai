@@ -117,3 +117,7 @@
     @apply max-w-7xl mx-auto;
   }
 }
+
+#lovable-badge {
+  display: none !important;
+}
