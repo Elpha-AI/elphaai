@@ -147,7 +147,7 @@ const Contact = () => {
                 <div className="glass-card rounded-xl p-5 sm:p-6">
                   <h3 className="font-display font-semibold text-foreground mb-3">Direct Contact</h3>
                   <div className="space-y-2 text-sm text-muted-foreground">
-                    <p>hello@elpha.ai</p>
+                    <p>info@elphaai.com</p>
                     <p>+1 (415) 555-0192</p>
                   </div>
                 </div>
